@@ -38,7 +38,7 @@ uint8_t __pop(RingBuffer *buff);
 
 
 
-void Serial_begin();
+void Serial_begin(UART_HandleTypeDef *);
 uint8_t Serial_available();
 uint8_t Serial_flush();
 uint8_t Serial_read();
@@ -48,5 +48,5 @@ void Serial_println(const char *s);
 void Serial_find();
 void Serial_findUntil();
 void Serial_peek();
-
+void Serial_readString();
 #endif /* INC_RINGBUFFERK_H_ */

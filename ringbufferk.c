@@ -44,21 +44,20 @@ __HAL_UART_ENABLE_IT(TxBuffer.uart,UART_IT_TXE);
 }
 void Serial_println(const char *datatosend){
 	while(*datatosend) Serial_write((uint8_t)*datatosend++);
-	Serial_write(0x00); // NULL
-	Serial_write(0x01); // CTRL+A Start of Header(SOH)
-	Serial_write(0x03); // CTRL+C End of Text (ETX)
-	Serial_write(0x04); // CTRL+D End of Transmission (EOT)
-	Serial_write(0x05); // CTRL+E Enquiry (SOH)
-	Serial_write(0x06); // CTRL+F Acknowledgement (ETX)
-	Serial_write(0x07); // CTRL+G BEL
-	Serial_write(0x0A); // New Line/LineFeed
-	Serial_write(0x0D); // Carriage Feed
-	Serial_write(0x18); // Cancel
-	Serial_write(0x1A); // Substitute
-
+	Serial_write(0x0A);
+//	Serial_write(0x00); // NULL
+//	Serial_write(0x01); // CTRL+A Start of Header(SOH)
+//	Serial_write(0x03); // CTRL+C End of Text (ETX)
+//	Serial_write(0x04); // CTRL+D End of Transmission (EOT)
+//	Serial_write(0x05); // CTRL+E Enquiry (SOH)
+//	Serial_write(0x06); // CTRL+F Acknowledgement (ETX)
+//	Serial_write(0x07); // CTRL+G BEL
+//	Serial_write(0x0A); // New Line/LineFeed
+//	Serial_write(0x0D); // Carriage Feed
+//	Serial_write(0x18); // Cancel
+//	Serial_write(0x1A); // Substitute
 }
 void UartHandler(UART_HandleTypeDef * uart){
-
 	if(uart->Instance->ISR & USART_ISR_RXNE){
 		_ReceivedData=(uint8_t)uart->Instance->RDR;
 		__push(&RxBuffer,_ReceivedData);
@@ -66,11 +65,22 @@ void UartHandler(UART_HandleTypeDef * uart){
 	if(uart->Instance->ISR & USART_ISR_TXE){
 		uint8_t _TransmitData=__pop(&TxBuffer);
 		if(_TransmitData!=0){
-//			uart->Instance->ISR;
 			uart->Instance->TDR=_TransmitData;
 		}
 		else{
 			__HAL_UART_DISABLE_IT(TxBuffer.uart,UART_IT_TXE);
 		}
 	}
+}
+void Serial_peek(){
+	if(RxBuffer._tail==RxBuffer._head)
+		{
+			return 0;
+	}
+	else{
+		return RxBuffer._buffer[RxBuffer._tail];
+	}
+}
+void Serial_readString(){
+
 }
