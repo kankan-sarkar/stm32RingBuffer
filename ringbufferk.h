@@ -36,17 +36,15 @@ void __push(RingBuffer *buff,uint8_t a);
 uint8_t __pop(RingBuffer *buff);
 
 
-
-
 void Serial_begin(UART_HandleTypeDef *);
 uint8_t Serial_available();
-uint8_t Serial_flush();
+void Serial_flush();
 uint8_t Serial_read();
 void Serial_write(uint8_t c);
-void Serial_print(const char *s);
-void Serial_println(const char *s);
-void Serial_find();
-void Serial_findUntil();
-void Serial_peek();
-void Serial_readString();
+void Serial_print(char *);
+void Serial_println(char *);
+uint8_t Serial_find(char *);
+uint8_t Serial_peek();
+char* Serial_readString();
+int8_t* parseCSV(char);
 #endif /* INC_RINGBUFFERK_H_ */
