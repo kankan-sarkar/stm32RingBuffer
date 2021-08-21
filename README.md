@@ -18,3 +18,6 @@ Arduino Like STM32 Ring buffer implementation
 - `uint8_t Serial_peek();`
 - `char* Serial_readString();`
 - `int8_t* parseCSV(char);`
+## Custom Configuration
+-If you want to change the buffer size then you can change by changing the [`#define UART_BUFFER_SIZE 64`](https://github.com/trripy/stm32RingBuffer/blob/df62671de6feb61fdf4d8f6c795956167392a0fc/ringbuffer.h#L15)
+-If you want to use different family of STM32 for example F4 or F0 , just comment out the inappropiate family [`#define STM32F4XX 1`](https://github.com/trripy/stm32RingBuffer/blob/df62671de6feb61fdf4d8f6c795956167392a0fc/ringbuffer.h#L18)
