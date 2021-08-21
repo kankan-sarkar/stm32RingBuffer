@@ -59,6 +59,25 @@ void Serial_println(char *datatosend){
 //	__push(&TxBuffer,0x1A); // Substitute
 	__HAL_UART_ENABLE_IT(TxBuffer.uart,UART_IT_TXE);
 }
+#ifdef STM32F4XX
+void UartHandler(UART_HandleTypeDef * uart){
+	if(uart->Instance->SR & USART_SR_RXNE){
+		_ReceivedData=(uint8_t)uart->Instance->DR;
+		__push(&RxBuffer,_ReceivedData);
+	}
+	if((uart->Instance->SR != RESET) & (USART_SR_TXE!=RESET)){
+		uint8_t _TransmitData=__pop(&TxBuffer);
+		if(_TransmitData!=0){
+			uart->Instance->DR=_TransmitData;
+		}
+		else{
+			__HAL_UART_DISABLE_IT(TxBuffer.uart,UART_IT_TXE);
+		}
+	}
+}
+#endif
+
+#ifdef STM32F0XX
 void UartHandler(UART_HandleTypeDef * uart){
 	if(uart->Instance->ISR & USART_ISR_RXNE){
 		_ReceivedData=(uint8_t)uart->Instance->RDR;
@@ -74,6 +93,7 @@ void UartHandler(UART_HandleTypeDef * uart){
 		}
 	}
 }
+#endif
 uint8_t Serial_peek(){
 	if(RxBuffer._tail==RxBuffer._head)
 	{
