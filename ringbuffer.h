@@ -14,6 +14,10 @@
 // Define Here what should be the buffer size of the ring buffer
 #define UART_BUFFER_SIZE 64
 
+// Define your Controller Family here so that the ringbuffer automatically adopts the UART registers
+#define STM32F4XX 1
+//#define STM32F0XX 1
+
 #if (UART_BUFFER_SIZE > 256)
 typedef uint16_t rxbuffer_Index_Type;
 typedef uint16_t txbuffer_Index_Type;
